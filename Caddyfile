@@ -1,0 +1,25 @@
+{
+  email admin@smartpage.site
+}
+(redirect) {
+  @http {
+    protocol http
+  }
+  redir @http https://{host}{uri}
+}
+
+smartpage.site {
+  encode gzip
+  reverse_proxy app:3000
+  import redirect
+}
+
+www.smartpage.site {
+  redir https://smartpage.site{uri} permanent
+  import redirect
+}
+
+mini.smartpage.site {
+  reverse_proxy mini:3000
+  import redirect
+}
